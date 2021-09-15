@@ -1,24 +1,24 @@
 import React from 'react';
-import { Alert } from 'react-native';
 import styled from 'styled-components/native';
 
-type TitleType = 'NAVER' | 'KAKAO';
+type TitleType = 'naver' | 'kakao';
 
 interface LoginButtonProps {
   title: TitleType;
+  onPress: () => void;
 }
 
 export default function LoginButton(props: LoginButtonProps) {
-  const { title } = props;
+  const { title, onPress } = props;
 
   return (
-    <Wrapper onPress={() => Alert.alert('pressed', 'pressed')}>
-      <Title>{title}</Title>
+    <Wrapper onPress={onPress}>
+      <Title>{title.toUpperCase()}</Title>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.Pressable`
+const Wrapper = styled.TouchableOpacity`
   display: flex;
   align-items: center;
   justify-content: center;
