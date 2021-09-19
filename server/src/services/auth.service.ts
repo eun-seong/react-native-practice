@@ -1,49 +1,26 @@
-// import env from '../config/env';
-// import qs from 'qs';
-// import fetch from 'node-fetch';
-// import * as jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs';
+import env from '../config/env';
+import fetch from 'node-fetch';
+import paramsBuilder from '../utils/paramsBuilder';
 
-// import User from '../models/user.model';
-// import CreateUserRequest from '../requests/auth/createUser.request';
-// import LoginRequest from '../requests/auth/login.request';
-// import UpdateProfileRequest from '../requests/auth/updateProfile.request';
-// import { JwtPayload } from 'jsonwebtoken';
-// import AuthError, { AuthErrorType } from '../errors/auth.error';
+const URL_GETTING_TOKEN_NAVER = `https://nid.naver.com/oauth2.0/token`;
+class AuthService {
+  async getAccessTokenWithNaver(code: string): Promise<{ access: string; refresh: string } | undefined> {
+    const url = paramsBuilder(
+      URL_GETTING_TOKEN_NAVER,
+      { grant_type: 'authorization_code' },
+      { client_id: env.NAVER_CLIENT_ID },
+      { client_secret: env.NAVER_CLIENT_SECRET },
+      { code: code },
+      { state: 'STATE_STRING' }
+    );
 
-// const OAUTH_ENDPOINT = 'https://github.com/login/oauth';
-// const API_ENDPOINT = 'https://api.github.com';
+    const result = await fetch(url).then((res) => res.json());
 
-// interface IGitAccessTokenResult {
-//   access_token: string;
-//   token_type: string;
-//   scope: string;
-// }
+    if (result) {
+      const { access_token, refresh_token } = result;
+      return { access: access_token, refresh: refresh_token };
+    }
+  }
+}
 
-// interface IGithubLoginResult {
-//   login: string;
-// }
-
-// export interface IUserJwtPayload extends JwtPayload {
-//   userId?: string;
-// }
-
-// interface IGithubUser {
-//   email?: string;
-//   name?: string;
-//   login: string;
-// }
-
-// class AuthService {
-//   public async createUser(req: CreateUserRequest) {
-//     const { password } = req;
-
-//     const hashedPassword = await bcrypt.hash(password, parseInt(env.BCRYPT_SALT_ROUNDS));
-//     await User.create({
-//       ...req,
-//       password: hashedPassword,
-//     });
-//   }
-// }
-
-// export default new AuthService();
+export default new AuthService();
