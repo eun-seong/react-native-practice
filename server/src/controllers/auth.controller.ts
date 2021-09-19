@@ -13,16 +13,17 @@ class AuthController {
     const { code } = req.query;
 
     const token = await AuthService.getAccessTokenWithNaver(code);
-
     if (!token) {
-      res.status(400).json({
+      return res.status(400).json({
         ok: false,
       });
     }
 
-    res.status(200).json({
+    const user = await AuthService.getUserInfoWithNaver(token.access);
+
+    return res.status(200).json({
       ok: true,
-      token,
+      user,
     });
   }
 }
