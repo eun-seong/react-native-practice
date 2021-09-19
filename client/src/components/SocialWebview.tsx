@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Button } from 'react-native';
+import { Alert, Button } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import styled from 'styled-components/native';
 
@@ -17,14 +17,17 @@ const SocialWebview = (props: SocialWebviewProps) => {
   const { source, closeSocialModal } = props;
   const webview = useRef(null);
 
-  const INJECTED_JAVASCRIPT =
-    '(function() {if(window.document.getElementsByTagName("pre").length>0){window.ReactNativeWebView.postMessage((window.document.getElementsByTagName("pre")[0].innerHTML));}})();';
+  const INJECTED_JAVASCRIPT = ` (function() {
+        if(window.document.getElementsByTagName("pre").length>0) {
+          window.ReactNativeWebView.postMessage((window.document.getElementsByTagName("pre")[0].innerHTML));
+      }})();`;
+
   const _handleMessage = async (e: WebViewMessageEvent) => {
     let result = JSON.parse(e.nativeEvent.data);
 
-    if (result.ok) {
-      const { code } = result;
-      console.log(code);
+    if (!result.ok) {
+      // TODO 실패했을 시 로직 추가
+      console.log('실패');
     }
     closeSocialModal();
   };
