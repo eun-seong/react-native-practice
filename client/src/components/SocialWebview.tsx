@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Button } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import styled from 'styled-components/native';
 
@@ -30,6 +31,7 @@ const SocialWebview = (props: SocialWebviewProps) => {
 
   return (
     <Wrapper>
+      <Button title={'닫기'} onPress={closeSocialModal} />
       <WebView
         ref={webview}
         source={source}
