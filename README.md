@@ -1,2 +1,2 @@
-# deliview
-딜리뷰 | delivery + review
+
+리액트 네이티브 연습용
