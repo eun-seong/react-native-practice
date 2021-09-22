@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styled from 'styled-components/native';
 
 const AuthLoadingScreen = (props: any) => {
-  const [userToken, setUserToken] = useState<string | null>(null);
   const getUserToken = async () => {
     const token = await AsyncStorage.getItem('userToken');
-    setUserToken(token);
-    props.navigation.navigate(userToken ? 'App' : 'Auth');
+    props.navigation.navigate(token ? 'App' : 'Auth');
   };
 
   useEffect(() => {
