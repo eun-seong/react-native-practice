@@ -1,6 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useRef } from 'react';
-import { Alert, Button } from 'react-native';
+import { Button } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
 
 let userAgent =
@@ -10,7 +12,7 @@ interface SocialWebviewProps {
   source: {
     uri: string;
   };
-  closeSocialModal: () => void;
+  closeSocialModal: (token?: string) => void;
 }
 
 const SocialWebview = (props: SocialWebviewProps) => {
@@ -22,19 +24,22 @@ const SocialWebview = (props: SocialWebviewProps) => {
           window.ReactNativeWebView.postMessage((window.document.getElementsByTagName("pre")[0].innerHTML));
       }})();`;
 
-  const _handleMessage = async (e: WebViewMessageEvent) => {
+  const handleMessage = async (e: WebViewMessageEvent) => {
     let result = JSON.parse(e.nativeEvent.data);
 
     if (!result.ok) {
       // TODO 실패했을 시 로직 추가
       console.log('실패');
+      return;
     }
-    closeSocialModal();
+
+    const { data } = result;
+    closeSocialModal(data.accessToken);
   };
 
   return (
     <Wrapper>
-      <Button title={'닫기'} onPress={closeSocialModal} />
+      <Button title={'닫기'} onPress={() => closeSocialModal()} />
       <WebView
         ref={webview}
         source={source}
@@ -42,7 +47,7 @@ const SocialWebview = (props: SocialWebviewProps) => {
         useWebKit={true}
         javaScriptEnabled={true}
         injectedJavaScript={INJECTED_JAVASCRIPT}
-        onMessage={_handleMessage}
+        onMessage={handleMessage}
       />
     </Wrapper>
   );

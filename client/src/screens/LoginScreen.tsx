@@ -1,14 +1,31 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
+import { createSwitchNavigator, NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
 import LoginButton from '../components/LoginButton';
 import SocialWebviewModal from '../components/SocialWebviewModal';
 
-const LoginScreen = () => {
+interface LoginProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+const LoginScreen = (props: LoginProps) => {
+  const { navigation } = props;
   const [socialModalVisible, setSocialModalVisible] = useState<boolean>(false);
   const [source, setSource] = useState<undefined | string>(undefined);
 
-  const closeSocialModal = () => {
+  const closeSocialModal = async (token?: string) => {
     setSocialModalVisible(!socialModalVisible);
+    if (token) {
+      try {
+        console.log(token);
+
+        await AsyncStorage.setItem('userToken', token);
+        navigation.navigate('App');
+      } catch (e) {
+        console.log('[Signup 에러]', e);
+      }
+    }
   };
 
   const loginWithSocial = (social: string) => {
