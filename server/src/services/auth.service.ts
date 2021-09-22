@@ -1,6 +1,8 @@
 import env from '../config/env';
 import fetch from 'node-fetch';
 import paramsBuilder from '../utils/paramsBuilder';
+import User from '../models/user.model';
+import { NaverUser } from '../types';
 
 const URL_GETTING_TOKEN_NAVER = `https://nid.naver.com/oauth2.0/token`;
 const URL_GETTING_USER_NAVER = `https://openapi.naver.com/v1/nid/me`;
@@ -33,11 +35,18 @@ class AuthService {
     }).then((res) => res.json());
 
     if (result.resultcode === '00') {
-      const { id, name, email, profile_image } = result.response;
-      return { id, name, email, profile_image };
+      const user: NaverUser = result.response;
+      return user;
     } else {
       throw Error('[ERROR] 네이버 유저 정보 가져오기 실패');
     }
+  }
+
+  async getUser(user: NaverUser, social_type: string): Promise<[User, boolean]> {
+    return User.findOrCreate({
+      where: { social_id: user.id, social_type },
+      defaults: { email: user.email, name: user.name, profile_image: user.profile_image },
+    });
   }
 }
 
