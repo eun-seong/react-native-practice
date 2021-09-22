@@ -1,8 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useRef } from 'react';
 import { Button } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
-import { NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
 
 let userAgent =

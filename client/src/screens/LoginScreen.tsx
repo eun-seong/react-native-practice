@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
-import { createSwitchNavigator, NavigationScreenProp } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
 import LoginButton from '../components/LoginButton';
 import SocialWebviewModal from '../components/SocialWebviewModal';
