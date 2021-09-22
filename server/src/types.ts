@@ -12,3 +12,7 @@ export interface NaverUser extends socialUser {
   social_type: 'naver';
   profile_image: string;
 }
+
+export interface UserJwtPayload {
+  id: string;
+}

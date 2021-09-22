@@ -1,8 +1,10 @@
 import env from '../config/env';
 import fetch from 'node-fetch';
+import * as jwt from 'jsonwebtoken';
+
 import paramsBuilder from '../utils/paramsBuilder';
 import User from '../models/user.model';
-import { NaverUser } from '../types';
+import { NaverUser, UserJwtPayload } from '../types';
 
 const URL_GETTING_TOKEN_NAVER = `https://nid.naver.com/oauth2.0/token`;
 const URL_GETTING_USER_NAVER = `https://openapi.naver.com/v1/nid/me`;
@@ -47,6 +49,18 @@ class AuthService {
       where: { social_id: user.id, social_type },
       defaults: { email: user.email, name: user.name, profile_image: user.profile_image },
     });
+  }
+
+  public async generateJWT(userId: string) {
+    const token = jwt.sign({ userId }, env.JWT_SECRET, {
+      expiresIn: env.JWT_EXPIRES_IN,
+    });
+
+    return token;
+  }
+
+  public async verifyJWT(token: string) {
+    return jwt.verify(token, env.JWT_SECRET) as UserJwtPayload;
   }
 }
 
