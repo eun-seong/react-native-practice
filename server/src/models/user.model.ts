@@ -1,4 +1,5 @@
 import { AllowNull, Column, DataType, Default, IsUUID, Model, PrimaryKey, Table, Unique } from 'sequelize-typescript';
+import { SocialTypes } from '../types';
 
 @Table({
   tableName: 'user',
@@ -15,11 +16,11 @@ export default class User extends Model {
 
   @Unique
   @AllowNull(false)
-  @Column(DataType.STRING(30))
+  @Column(DataType.STRING(100))
   social_id!: string;
 
   @AllowNull(false)
-  @Column(DataType.STRING(30))
+  @Column(DataType.ENUM({ values: SocialTypes }))
   social_type!: string;
 
   @Unique
