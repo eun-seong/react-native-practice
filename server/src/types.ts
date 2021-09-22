@@ -2,7 +2,7 @@ export type SocialType = 'naver' | 'kakao';
 export const SocialTypes: SocialType[] = ['naver', 'kakao'];
 
 interface socialUser {
-  id: number;
+  id: string;
   social_type: SocialType;
 }
 

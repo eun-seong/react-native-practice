@@ -23,10 +23,13 @@ class AuthController {
     const user: NaverUser = await AuthService.getUserInfoWithNaver(token.access);
     const [registeredUser, isCreated] = await AuthService.getUser(user, 'naver');
 
+    const accessToken = await AuthService.generateJWT(user.id);
+
     return res.status(200).json({
       ok: true,
       data: {
         id: registeredUser.id,
+        accessToken,
       },
     });
   }
