@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import AuthService from '../services/auth.service';
+import { NaverUser } from '../types';
 
 interface LoginWishNaverRequest extends Request {
   query: {
@@ -19,11 +20,14 @@ class AuthController {
       });
     }
 
-    const user = await AuthService.getUserInfoWithNaver(token.access);
+    const user: NaverUser = await AuthService.getUserInfoWithNaver(token.access);
+    const [registeredUser, isCreated] = await AuthService.getUser(user, 'naver');
 
     return res.status(200).json({
       ok: true,
-      user,
+      data: {
+        id: registeredUser.id,
+      },
     });
   }
 }
