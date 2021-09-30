@@ -1,18 +1,21 @@
 import React from 'react';
+import env from '../../environments';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import styled from 'styled-components/native';
+import Constants from 'expo-constants';
 
 const MainScreen = () => {
   return (
     <Wrapper>
-      <Map
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+      <GooglePlacesAutocomplete
+        placeholder="장소를 입력해주세요"
+        query={{
+          key: env.GOOGLE_MAPS_API_KEY,
+          language: 'ko',
         }}
+        onPress={(data, details = null) => alert(data)}
+        onFail={(error) => alert(error)}
       />
     </Wrapper>
   );
@@ -22,8 +25,8 @@ export default MainScreen;
 
 const Wrapper = styled.View`
   flex: 1;
-  align-items: center;
-  justify-content: center;
+  padding: 10px;
+  background-color: #ecf0f1;
 `;
 
 const MapWrapper = styled.View`
