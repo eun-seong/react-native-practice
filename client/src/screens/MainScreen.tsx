@@ -1,15 +1,12 @@
 import React from 'react';
-import { Text } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import styled from 'styled-components/native';
 
 const MainScreen = () => {
   return (
     <Wrapper>
-      <Text>MAin</Text>
-      <MapView
+      <Map
         provider={PROVIDER_GOOGLE}
-        style={{ flex: 1 }}
         initialRegion={{
           latitude: 37.78825,
           longitude: -122.4324,
@@ -17,7 +14,6 @@ const MainScreen = () => {
           longitudeDelta: 0.0421,
         }}
       />
-      <Text>MAin</Text>
     </Wrapper>
   );
 };
