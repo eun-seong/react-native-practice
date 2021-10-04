@@ -1,6 +1,12 @@
-import React from 'react';
-import env from '@/config/env';
+import React, { useEffect } from 'react';
+import MainPage from './pages/MainPage';
 
-const App = () => <>{env.API_URL}</>;
+const App = () => {
+  return (
+    <>
+      <MainPage />
+    </>
+  );
+};
 
 export default App;
