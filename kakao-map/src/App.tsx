@@ -1,4 +1,6 @@
 import React from 'react';
-const  App = () => <>init</>;
+import env from '@/config/env';
+
+const App = () => <>{env.API_URL}</>;
 
 export default App;

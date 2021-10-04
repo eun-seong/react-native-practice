@@ -18,10 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@test/*": ["test/*"],
-      "@stories/*": ["stories/*"],
-      "@mocks/*": ["mocks/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src", "index.d.ts"],
