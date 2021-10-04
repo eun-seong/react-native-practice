@@ -1,42 +1,35 @@
-import React from 'react';
-import env from '../../environments';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import styled from 'styled-components/native';
-import Constants from 'expo-constants';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
+import WebView from 'react-native-webview';
+import styled from 'styled-components';
+
+const Wrapper = styled(View)`
+  height: 100%;
+`;
+
+interface Place {
+  id: string;
+  content: string;
+  position: {
+    lat: string;
+    lng: string;
+  };
+}
 
 const MainScreen = () => {
+  const [place, setPlace] = useState<Place | null>();
+
+  // 웹뷰 -> 앱
+  const onMessage = (e: any) => {
+    const data: Place = JSON.parse(e.nativeEvent.data);
+    setPlace(data);
+  };
+
   return (
     <Wrapper>
-      <GooglePlacesAutocomplete
-        placeholder="장소를 입력해주세요"
-        query={{
-          key: env.GOOGLE_MAPS_API_KEY,
-          language: 'ko',
-        }}
-        onPress={(data, details = null) => alert(data)}
-        onFail={(error) => alert(error)}
-      />
+      <WebView source={{ uri: 'https://eunseong.loca.lt' }} onMessage={onMessage} />
     </Wrapper>
   );
 };
 
 export default MainScreen;
-
-const Wrapper = styled.View`
-  flex: 1;
-  padding: 10px;
-  background-color: #ecf0f1;
-`;
-
-const MapWrapper = styled.View`
-  flex: 1;
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Map = styled(MapView)`
-  width: 100%;
-  flex: 1;
-`;
